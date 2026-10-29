@@ -75,6 +75,20 @@ These are sources to **study**, not Leo-adopted dependencies or evidence that a 
 
 **Study method:** look for the smallest repeatable policies that explain observed wins (e.g., appropriate delegation, bounded context offloading, meaningful verification) and equally for counterexamples (coordination overhead, wrong worker choices, dropped context, expensive review). Treat published benchmark scores and traces as hypotheses for Leo's own ablations, not as a transferable euro-per-accepted-task estimate.
 
+
+## Practitioner signal: early enterprise adoption of mixed inference
+
+In an [October 28, 2026 post](https://x.com/thdxr/status/2115447178722177226) ([retrievable text mirror](https://teapaw.org/thdxr)), Dax (an OpenCode/Anomaly developer) argues that demand for open-model inference is **early and product-led**, not an already-proven mass market. Treat this as an informed practitioner's commercial observation, not independently audited enterprise-adoption data or peer-reviewed literature.
+
+- **Mixed-model deployments are emerging, not yet universal.** Dax reports enterprise inbound at OpenCode and says companies are beginning to introduce some open-source-model inference into their stacks. He expects demand to grow but cautions that many inference suppliers are already investing ahead of it.
+- **Products create demand for inference.** Rather than infer a huge latent enterprise market from model availability alone, examine how many adopted products can actually use open models. OpenCode is offered as one such example. This is a useful counterweight to a supply-led thesis for orchestration.
+- **Running reliable inference is hard.** He questions assumptions about large-scale private self-hosting: production serving requires scarce expertise. He also cautions that renting another provider's GPUs does not itself give an enterprise genuine compute sovereignty.
+- **Market-size claims need scrutiny.** He points to the disclosed scale of a small number of dedicated inference providers as a reality check on claims of hidden enterprise demand, without providing a complete market census. His adjacent [commentary on the frontier gap](https://teapaw.org/thdxr) also cautions against assuming open models are about to displace frontier models outright.
+
+**Implications and research hypothesis for Leo:** enterprises experimenting with open-model workers alongside frontier systems **may** need reusable, trustworthy answers to *which tasks to delegate, which model to use, when to escalate, and how to verify the outcome*. Leo's publicly reproducible recipes and failure analyses could supply this knowledge; that is a **potential user need**, not a demand signal established by the post. Prioritize product-integrable, model/provider-agnostic orchestration contracts and realistic frontier-only comparators. Report accepted-task quality, cost, latency, privacy/deployment assumptions, handoff failures, and serving/operational overhead; do not claim sovereignty from an open-weight model or rented compute alone.
+
+**Validation path:** interview teams already integrating open-model inference, identify their actual allocation/escalation and verification problems, and test whether they adopt or reproduce a Leo recipe. Separate interest in lower-cost inference from willingness to use or contribute orchestration research. Preserve the distinction between *open-weight models* and *open-source software*, which the post groups loosely as “OSS inference.”
+
 ## Why start with NixOS
 
 The official [NixOS VM testing guide](https://nix.dev/tutorials/nixos/integration-testing-using-virtual-machines.html) provides declarative machines and Python assertions over QEMU. Leo can use these primitives to test services and multi-machine behavior under pinned inputs.
