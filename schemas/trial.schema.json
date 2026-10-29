@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Leo trial ledger record v0.1",
+  "description": "One record per scheduled system/task/replicate, covering the entire trial. Currency and cost basis come from its experiment manifest. Null means unknown. JSON numeric values must be finite.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "experiment_id", "system_id", "task_id", "replicate", "outcome", "cost", "wall_seconds", "human_minutes", "critical_failure", "trace_ref"],
+  "properties": {
+    "schema_version": {"const": "0.1"},
+    "experiment_id": {"$ref": "#/$defs/nonemptyString"},
+    "system_id": {"$ref": "#/$defs/nonemptyString"},
+    "task_id": {"$ref": "#/$defs/nonemptyString"},
+    "replicate": {"type": "integer", "minimum": 1},
+    "outcome": {"enum": ["accepted", "failed", "timeout", "infrastructure_error"]},
+    "cost": {
+      "$ref": "#/$defs/nullableNonnegative",
+      "description": "Whole-trial total for the manifest's accounting basis, including all applicable model calls, reviews, retries, verification, and failed work. Use null if that total is incomplete or unknown."
+    },
+    "wall_seconds": {"$ref": "#/$defs/nullableNonnegative"},
+    "human_minutes": {"$ref": "#/$defs/nullableNonnegative"},
+    "critical_failure": {"type": "boolean"},
+    "trace_ref": {"$ref": "#/$defs/nonemptyString"}
+  },
+  "allOf": [{
+    "if": {"properties": {"outcome": {"const": "accepted"}}, "required": ["outcome"]},
+    "then": {"properties": {"critical_failure": {"const": false}}}
+  }],
+  "$defs": {
+    "nonemptyString": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "nullableNonnegative": {"type": ["number", "null"], "minimum": 0}
+  }
+}

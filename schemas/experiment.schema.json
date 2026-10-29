@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Leo experiment roster v0.1",
+  "description": "The scheduled trial roster is the cross-product of systems and trials. This format does not itself constitute a complete scientific preregistration.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "experiment_id", "data_kind", "currency", "cost_basis", "task_suite_id", "task_suite_revision", "systems", "trials"],
+  "properties": {
+    "schema_version": {"const": "0.1"},
+    "experiment_id": {"$ref": "#/$defs/nonemptyString"},
+    "data_kind": {"enum": ["synthetic", "measured"]},
+    "currency": {"enum": ["EUR", "USD"]},
+    "cost_basis": {"enum": ["api_equivalent", "marginal_cash", "fully_loaded"]},
+    "task_suite_id": {"$ref": "#/$defs/nonemptyString"},
+    "task_suite_revision": {"$ref": "#/$defs/nonemptyString"},
+    "systems": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"$ref": "#/$defs/nonemptyString"}
+    },
+    "trials": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["task_id", "replicate"],
+        "properties": {
+          "task_id": {"$ref": "#/$defs/nonemptyString"},
+          "replicate": {"type": "integer", "minimum": 1}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "nonemptyString": {"type": "string", "minLength": 1, "pattern": "\\S"}
+  }
+}

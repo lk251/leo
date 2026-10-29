@@ -1,0 +1,15 @@
+{
+  "schema_version": "0.1",
+  "experiment_id": "synthetic-format-example-only",
+  "data_kind": "synthetic",
+  "currency": "EUR",
+  "cost_basis": "api_equivalent",
+  "task_suite_id": "synthetic-format-tasks",
+  "task_suite_revision": "example-v0.1-no-real-tasks",
+  "systems": ["synthetic-system-a", "synthetic-system-b"],
+  "trials": [
+    {"task_id": "synthetic-task-001", "replicate": 1},
+    {"task_id": "synthetic-task-002", "replicate": 1},
+    {"task_id": "synthetic-task-003", "replicate": 1}
+  ]
+}
