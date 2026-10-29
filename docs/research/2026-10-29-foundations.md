@@ -51,6 +51,30 @@ The current [Inspect bridge documentation](https://inspect.aisi.org.uk/agent-bri
 
 Inspect can publish a [bundled log viewer](https://inspect.aisi.org.uk/log-viewer.html). If chosen, this could provide inspectable traces behind short social posts without first building a dashboard. Redaction and provenance review would still be necessary.
 
+## Additional evidence leads: orchestration benchmarks and trajectories
+
+These are sources to **study**, not Leo-adopted dependencies or evidence that a particular orchestrator wins on NixOS. Examine both successful and failed trajectories; record exact versions, workload, model/worker identities, handoff policy, verifier, context handling, and complete time/cost data before transferring a finding.
+
+### Benchmarks and controlled studies
+
+| Source | What Leo can learn | Transfer/reproduction caveat |
+| --- | --- | --- |
+| [MS-Eval](https://arxiv.org/abs/2610.22869) (sub-agent delegation in MCP-intensive work) | Delegation/specialization strategies, controlled execution, orchestration metrics, and how extra or redundant delegation affects cost. | Its paper advertises [code](https://github.com/LINs-lab/MS-Eval), but that repository was not accessible in this review (2026-10-29); verify release and harness before adopting it. |
+| [OrchBench](https://arxiv.org/abs/2607.25656) (deterministic orchestration-plan simulation) | Compare task DAG decomposition, parallelism, cross-agent context transfer, token cost, and simulated quality separately from worker-model capability. | A simulated plan is not a verified real task outcome; an official runnable code release was not confirmed here. |
+| [TraceTrial-Bench](https://arxiv.org/abs/2610.32285) ([code and tasks](https://github.com/TraceLite-AI/TraceTrial-Bench)) | Native execution traces, a reproducible harness benchmark, and failure attribution across context, execution, governance, lifecycle, observability, tools, and verification; distinguish task success from harness correctness. | Evaluate how its Docker tasks and model/harness assumptions map to a pinned NixOS setup. |
+| [MAS-Orchestra / MASBench](https://arxiv.org/abs/2601.14652) ([code and examples](https://github.com/SalesforceAIResearch/MAS-Orchestra)) | Inspect generated multi-agent designs and controlled tests of when task structure (depth, horizon, breadth, parallelism, robustness) rewards delegation. | Its learned/training-time orchestration and benchmark domains are not direct evidence for Leo's inference-time engineering policies. |
+
+### Public trajectories and reproducible harnesses
+
+| Source | Possible use | Caution |
+| --- | --- | --- |
+| [Exgentic Agent LLM Traces v2](https://huggingface.co/datasets/Exgentic/agent-llm-traces-v2) | Approximately 10,000 recorded benchmark agent runs, with agent-visible model calls in an OpenTelemetry-shaped format; inspect successful and failed tool-use strategies, costs, and common breakdowns. | The agent-only filtered corpus excludes evaluation scaffolding; consult the [release description](https://huggingface.co/blog/michalshmu/exgentic-agent-llm-traces-v2) and full provenance when reconciling whole-trial costs. |
+| [open-agent-traces](https://huggingface.co/datasets/juliensimon/open-agent-traces) | Synthetic sequential, supervisor, and parallel multi-agent workflows with event traces, handoffs, and injected deviations; test parsers and failure taxonomies. | **Synthetic**, not observed evidence of successful production orchestrations. |
+| [unified-agent-trajectories](https://huggingface.co/datasets/ChrisDing1105/unified-agent-trajectories) | Benchmark-converted tool-aware and multimodal trajectories with recorded model/harness identities and provenance; compare strategy patterns and audit trace formats. | Mixed run types, benchmark dependence, and upstream redistribution/license restrictions require review. |
+| [OpenHands](https://github.com/OpenHands/OpenHands) | Open-source coding-agent harness/SDK to generate Leo's **own** controlled trajectories and audit tool calls, execution, and independent acceptance checks. | Run a pinned version and compare it with existing harness choices; it is not itself evidence that multi-agent orchestration is superior. |
+
+**Study method:** look for the smallest repeatable policies that explain observed wins (e.g., appropriate delegation, bounded context offloading, meaningful verification) and equally for counterexamples (coordination overhead, wrong worker choices, dropped context, expensive review). Treat published benchmark scores and traces as hypotheses for Leo's own ablations, not as a transferable euro-per-accepted-task estimate.
+
 ## Why start with NixOS
 
 The official [NixOS VM testing guide](https://nix.dev/tutorials/nixos/integration-testing-using-virtual-machines.html) provides declarative machines and Python assertions over QEMU. Leo can use these primitives to test services and multi-machine behavior under pinned inputs.
